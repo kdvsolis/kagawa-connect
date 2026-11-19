@@ -1,0 +1,27 @@
+# OpenBiometrics — local KYC engine (face match ID ↔ selfie)
+# Docs: https://docs.openbiometrics.dev/self-hosting/docker/
+#
+# Usage:
+#   docker compose -f docker-compose.openbiometrics.yml up -d
+#   open http://localhost:8000/docs
+#
+# Then in .env.local:
+#   OPENBIOMETRICS_BASE_URL=http://127.0.0.1:8000
+
+services:
+  openbiometrics:
+    # If this image 404s, use the clone+pip setup (Option B in chat / docs).
+    # Repo: https://github.com/openbm/openbiometrics
+    image: ghcr.io/openbm/openbiometrics-api:latest
+    ports:
+      - "8000:8000"
+    environment:
+      DEVICE: cpu
+    volumes:
+      - ob-models:/app/models
+      - ob-watchlists:/app/watchlists
+    restart: unless-stopped
+
+volumes:
+  ob-models:
+  ob-watchlists:
